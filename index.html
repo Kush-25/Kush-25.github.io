@@ -3,21 +3,40 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>AI Portfolio</title>
+        <title>Portfolio | AI & Dev</title>
         <link rel="stylesheet" href="style.css" />
     </head>
     <body>
-        <div class="container">
-            <h1>Hello, I'm an AI Student</h1>
-            <p>
-                Currently building an <strong>Agentic RAG system</strong> and
-                porting <strong>CubeTime</strong> to Android.
-            </p>
+        <nav>
+            <div class="logo">./root</div>
+            <div class="links">
+                <a href="#projects">Work</a>
+                <a href="https://github.com/yourusername" target="_blank"
+                    >GitHub</a
+                >
+            </div>
+        </nav>
 
-            <div id="project-list"></div>
+        <main>
+            <section class="hero">
+                <span class="badge">Available for Fall 2027 Research</span>
+                <h1>
+                    I build <span class="accent">autonomous agents</span> and
+                    intelligent systems.
+                </h1>
+                <p>
+                    Final year AI Student. Specializing in Agentic RAG and
+                    security-focused software. Currently optimizing workflows on
+                    Arch Linux.
+                </p>
+            </section>
 
-            <button id="color-mode">Toggle Dark Mode</button>
-        </div>
+            <section id="projects">
+                <h2>Selected Work</h2>
+                <div class="grid" id="project-grid"></div>
+            </section>
+        </main>
+
         <script src="script.js"></script>
     </body>
 </html>

@@ -1,35 +1,85 @@
 :root {
-    --bg: #0f172a;
-    --text: #f8fafc;
-    --accent: #38bdf8;
+    --bg: #0b0f1a;
+    --card-bg: #161b22;
+    --text: #e6edf3;
+    --accent: #58a6ff;
+    --secondary: #8b949e;
 }
 
+* {
+    box-sizing: border-box;
+}
 body {
     background-color: var(--bg);
     color: var(--text);
-    font-family: sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    font-family:
+        "Inter",
+        -apple-system,
+        sans-serif;
     margin: 0;
+    line-height: 1.6;
 }
 
-.container {
-    text-align: center;
-    max-width: 600px;
-    padding: 20px;
+nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem 10%;
+    font-family: monospace;
 }
 
-strong {
+main {
+    padding: 0 10%;
+}
+
+.hero {
+    padding: 4rem 0;
+    max-width: 800px;
+}
+.badge {
+    background: rgba(88, 166, 255, 0.1);
+    color: var(--accent);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-family: monospace;
+}
+
+h1 {
+    font-size: 3rem;
+    margin: 1.5rem 0;
+    line-height: 1.1;
+}
+.accent {
     color: var(--accent);
 }
 
-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    cursor: pointer;
-    background: var(--accent);
-    border: none;
-    border-radius: 5px;
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.card {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #30363d;
+    transition:
+        transform 0.2s,
+        border-color 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+}
+
+.card h3 {
+    margin-top: 0;
+    color: var(--accent);
+}
+.card p {
+    font-size: 0.9rem;
+    color: var(--secondary);
 }
