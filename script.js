@@ -1,34 +1,47 @@
 /**
+ * LIVE GITHUB PULSE
+ */
+const fetchGithubActivity = async () => {
+  const commitText = document.querySelector("#latest-commit");
+  const username = "Kush-25";
+
+  try {
+    const response = await fetch(
+      `https://api.github.com/users/${username}/events/public`,
+    );
+    if (!response.ok) throw new Error();
+    const events = await response.json();
+
+    // Find the first PushEvent
+    const pushEvent = events.find((e) => e.type === "PushEvent");
+
+    if (pushEvent) {
+      const repo = pushEvent.repo.name.split("/")[1];
+      const message = pushEvent.payload.commits[0].message;
+      commitText.textContent = `git log -1 --pretty=format:"%s" [${repo}]: ${message}`;
+    } else {
+      commitText.textContent = "git status: No recent pushes found.";
+    }
+  } catch (e) {
+    commitText.textContent = "git log: could not reach remote server.";
+    document.querySelector(".status-dot").style.background = "#ff4b2b";
+    document.querySelector(".status-dot").style.boxShadow = "0 0 8px #ff4b2b";
+  }
+};
+
+/**
  * 3D CUBE SCROLL ENGINE
  */
 const initCubeScroll = () => {
   const cube = document.querySelector("#cube-container");
-
   window.addEventListener("scroll", () => {
     const scrollPercent =
       window.scrollY /
       (document.documentElement.scrollHeight - window.innerHeight);
-
-    // Rotates the cube based on scroll
     const rotateX = -20 + scrollPercent * 360;
     const rotateY = 45 + scrollPercent * 720;
-
     cube.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
   });
-};
-
-/**
- * GITHUB ACTIVITY (Placeholder for the next feature)
- */
-const fetchGithubActivity = async () => {
-  const commitText = document.querySelector("#latest-commit");
-  try {
-    // We will implement the real API call in the next push
-    commitText.textContent =
-      "git log --oneline: Initialized Portfolio Engine...";
-  } catch (e) {
-    commitText.textContent = "git status: offline";
-  }
 };
 
 /**

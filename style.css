@@ -28,13 +28,14 @@ body {
     margin: 0;
     line-height: 1.6;
     padding-top: 60px;
-    min-height: 200vh; /* Scroll room for the cube to spin */
+    min-height: 150vh;
+    transition: background 0.3s ease;
 }
 
 /* 3D CUBE SYSTEM */
 #cube-viewport {
     position: fixed;
-    bottom: 50px;
+    bottom: 80px;
     right: 50px;
     width: var(--cube-size);
     height: var(--cube-size);
@@ -42,7 +43,6 @@ body {
     z-index: 100;
     pointer-events: none;
 }
-
 #cube-container {
     width: 100%;
     height: 100%;
@@ -51,7 +51,6 @@ body {
     transform: rotateX(-20deg) rotateY(45deg);
     transition: transform 0.1s ease-out;
 }
-
 .cube-face {
     position: absolute;
     width: var(--cube-size);
@@ -59,8 +58,6 @@ body {
     border: 2px solid var(--bg);
     opacity: 0.9;
 }
-
-/* Rubik's Colors */
 .front {
     background: #b71234;
     transform: translateZ(calc(var(--cube-size) / 2));
@@ -86,13 +83,12 @@ body {
     transform: rotateX(-90deg) translateZ(calc(var(--cube-size) / 2));
 }
 
-/* Terminal Mode Cube */
 body.terminal-mode .cube-face {
     background: transparent !important;
     border: 1px solid var(--accent);
 }
 
-/* UI Elements */
+/* Navigation */
 .glass-nav {
     position: fixed;
     top: 20px;
@@ -108,7 +104,6 @@ body.terminal-mode .cube-face {
     gap: 40px;
     z-index: 1000;
 }
-
 .nav-links {
     list-style: none;
     display: flex;
@@ -120,6 +115,10 @@ body.terminal-mode .cube-face {
     color: var(--text-dim);
     text-decoration: none;
     font-size: 0.9rem;
+    transition: 0.3s;
+}
+.nav-links a:hover {
+    color: var(--accent);
 }
 
 #terminal-toggle {
@@ -128,8 +127,10 @@ body.terminal-mode .cube-face {
     color: var(--text);
     padding: 2px 8px;
     border-radius: 4px;
+    font-family: "JetBrains Mono";
 }
 
+/* Hero */
 .hero-section {
     text-align: center;
     padding: 120px 20px;
@@ -149,13 +150,14 @@ h1 {
     margin-top: 10px;
 }
 
+/* Grid */
 .grid-layout {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 25px;
     max-width: 1100px;
     margin: 0 auto;
-    padding: 40px 20px;
+    padding: 40px 20px 100px;
 }
 .project-card {
     background: var(--card-bg);
@@ -164,7 +166,6 @@ h1 {
     border-radius: 16px;
     transition: all 0.4s;
 }
-
 .tech-tag {
     display: inline-flex;
     align-items: center;
@@ -180,20 +181,44 @@ h1 {
     height: 12px;
 }
 
+/* Footer Pulse */
 .footer-strip {
     position: fixed;
     bottom: 0;
     width: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    padding: 10px 20px;
+    background: rgba(10, 10, 10, 0.9);
+    padding: 12px 20px;
     font-family: "JetBrains Mono", monospace;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 90;
+    z-index: 900;
+}
+#github-pulse {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 .terminal-prompt {
     color: var(--accent);
-    margin-right: 10px;
+}
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: #34d399;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #34d399;
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 #custom-cursor {
