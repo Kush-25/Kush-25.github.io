@@ -9,6 +9,7 @@
 
 * {
     box-sizing: border-box;
+    cursor: none; /* Hide the default cursor */
 }
 
 body {
@@ -18,7 +19,31 @@ body {
     margin: 0;
     line-height: 1.6;
     padding-top: 100px;
-    min-height: 200vh; /* Ensure there is room to scroll */
+    min-height: 200vh;
+}
+
+/* Custom Cursor */
+#custom-cursor {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition:
+        transform 0.1s ease-out,
+        background 0.3s ease,
+        width 0.3s ease,
+        height 0.3s ease;
+    transform: translate(-50%, -50%);
+}
+
+#custom-cursor.hover {
+    width: 40px;
+    height: 40px;
+    background: rgba(59, 130, 246, 0.1);
+    border-color: var(--accent);
 }
 
 /* Navigation */
@@ -58,7 +83,7 @@ body {
     color: var(--accent);
 }
 
-/* Typography */
+/* Hero */
 .hero-section {
     text-align: center;
     padding: 100px 20px;
@@ -93,12 +118,18 @@ h1 {
     padding: 2rem;
     border-radius: 16px;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    will-change: transform;
 }
 
 .project-card:hover {
-    transform: translateY(-8px);
     border-color: var(--accent);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.project-card > * {
+    transform: translateZ(20px);
 }
 
 .category {

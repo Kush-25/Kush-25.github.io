@@ -1,4 +1,52 @@
 /**
+ * CUSTOM CURSOR LOGIC
+ */
+const initCursor = () => {
+  const cursor = document.querySelector("#custom-cursor");
+
+  document.addEventListener("mousemove", (e) => {
+    cursor.style.left = e.clientX + "px";
+    cursor.style.top = e.clientY + "px";
+  });
+
+  // Add hover effect to all interactive elements
+  const addCursorEvents = () => {
+    const interactiveElements = document.querySelectorAll(
+      "a, .project-card, button",
+    );
+    interactiveElements.forEach((el) => {
+      el.addEventListener("mouseenter", () => cursor.classList.add("hover"));
+      el.addEventListener("mouseleave", () => cursor.classList.remove("hover"));
+    });
+  };
+
+  addCursorEvents();
+  // Return the function so we can call it again after projects load
+  return addCursorEvents;
+};
+
+/**
+ * MAGNETIC TILT LOGIC
+ */
+const applyTilt = (card) => {
+  card.addEventListener("mousemove", (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = (y - centerY) / 10;
+    const rotateY = (centerX - x) / 10;
+
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
+  });
+
+  card.addEventListener("mouseleave", () => {
+    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)`;
+  });
+};
+
+/**
  * REVEAL ANIMATION LOGIC
  */
 const initScrollReveal = () => {
@@ -19,17 +67,15 @@ const initScrollReveal = () => {
 /**
  * PROJECT LOADER
  */
-const loadProjects = async () => {
+const loadProjects = async (refreshCursor) => {
   const projectGrid = document.querySelector("#projects");
 
   try {
-    // Fetching from current directory
     const response = await fetch("./projects.json");
     if (!response.ok) throw new Error("Could not fetch projects.json");
 
     const projects = await response.json();
 
-    // Clear loading text and inject projects
     projectGrid.innerHTML = projects
       .map(
         (project) => `
@@ -46,17 +92,22 @@ const loadProjects = async () => {
       )
       .join("");
 
-    // Initialize animations for the new project cards
     initScrollReveal();
+    document
+      .querySelectorAll(".project-card")
+      .forEach((card) => applyTilt(card));
+
+    // Refresh cursor listeners for the new cards
+    if (refreshCursor) refreshCursor();
   } catch (error) {
     console.error("Error:", error);
     projectGrid.innerHTML = `<p style="color:red;">Error loading projects: ${error.message}</p>`;
-    // Still run reveal for the hero section even if projects fail
     initScrollReveal();
   }
 };
 
 // Start the process
 document.addEventListener("DOMContentLoaded", () => {
-  loadProjects();
+  const refreshCursor = initCursor();
+  loadProjects(refreshCursor);
 });
