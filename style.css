@@ -7,11 +7,10 @@
     --glass: rgba(255, 255, 255, 0.03);
 }
 
-/* Terminal Mode Overrides */
 body.terminal-mode {
     --bg: #000000;
     --card-bg: #050505;
-    --text: #00ff41; /* Classic Terminal Green */
+    --text: #00ff41;
     --text-dim: #008f11;
     --accent: #00ff41;
     --glass: rgba(0, 255, 65, 0.05);
@@ -20,12 +19,14 @@ body.terminal-mode {
 
 body.terminal-mode .project-card {
     border: 1px solid #00ff41;
-    border-radius: 0; /* Boxy terminal look */
+    border-radius: 0;
 }
-
 body.terminal-mode .glass-nav {
     border: 1px solid #00ff41;
     border-radius: 0;
+}
+body.terminal-mode img.tech-icon {
+    filter: sepia(100%) hue-rotate(90deg) brightness(150%);
 }
 
 * {
@@ -46,7 +47,6 @@ body {
         color 0.3s ease;
 }
 
-/* Toggle Button Style */
 #terminal-toggle {
     background: transparent;
     border: 1px solid var(--text-dim);
@@ -54,7 +54,6 @@ body {
     padding: 2px 8px;
     border-radius: 4px;
     font-family: "JetBrains Mono", monospace;
-    cursor: none;
     transition: all 0.3s;
 }
 
@@ -63,7 +62,6 @@ body {
     color: var(--bg);
 }
 
-/* Custom Cursor */
 #custom-cursor {
     width: 20px;
     height: 20px;
@@ -87,7 +85,6 @@ body {
     border-color: var(--accent);
 }
 
-/* Navigation */
 .glass-nav {
     position: fixed;
     top: 20px;
@@ -113,24 +110,20 @@ body {
     padding: 0;
     align-items: center;
 }
-
 .nav-links a {
     color: var(--text-dim);
     text-decoration: none;
     font-size: 0.9rem;
     transition: color 0.3s;
 }
-
 .nav-links a:hover {
     color: var(--accent);
 }
 
-/* Hero */
 .hero-section {
     text-align: center;
     padding: 100px 20px;
 }
-
 h1 {
     font-size: 4rem;
     margin-bottom: 0.5rem;
@@ -144,7 +137,6 @@ h1 {
     font-size: 1.2rem;
 }
 
-/* Grid & Cards */
 .grid-layout {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -162,7 +154,6 @@ h1 {
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     transform-style: preserve-3d;
     perspective: 1000px;
-    will-change: transform;
 }
 
 .project-card:hover {
@@ -173,20 +164,27 @@ h1 {
 .category {
     font-family: "JetBrains Mono", monospace;
     font-size: 0.7rem;
-    text-transform: uppercase;
     color: var(--accent);
     letter-spacing: 1px;
 }
 
 .tech-tag {
-    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
     background: rgba(255, 255, 255, 0.05);
-    padding: 4px 8px;
-    border-radius: 4px;
-    color: var(--text-dim);
+    padding: 6px 12px;
+    border-radius: 6px;
+    color: var(--text);
 }
 
-/* Animations */
+.tech-icon {
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
+}
+
 .reveal {
     opacity: 0;
     transform: translateY(30px);
@@ -194,7 +192,6 @@ h1 {
         opacity 0.8s ease-out,
         transform 0.8s ease-out;
 }
-
 .reveal.active {
     opacity: 1;
     transform: translateY(0);
