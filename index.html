@@ -3,37 +3,37 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Portfolio | AI & Dev</title>
+        <title>Kush | AI Developer</title>
         <link rel="stylesheet" href="style.css" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono&display=swap"
+            rel="stylesheet"
+        />
     </head>
     <body>
-        <nav>
-            <div class="logo">./root</div>
-            <div class="links">
-                <a href="#projects">Work</a>
-                <a href="https://github.com/yourusername" target="_blank"
-                    >GitHub</a
-                >
-            </div>
+        <nav class="glass-nav">
+            <div class="logo">K25</div>
+            <ul class="nav-links">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#projects">Work</a></li>
+                <li>
+                    <a href="https://github.com/Kush-25" target="_blank"
+                        >GitHub</a
+                    >
+                </li>
+            </ul>
         </nav>
 
         <main>
-            <section class="hero">
-                <span class="badge">Available for Fall 2027 Research</span>
-                <h1>
-                    I build <span class="accent">autonomous agents</span> and
-                    intelligent systems.
-                </h1>
-                <p>
-                    Final year AI Student. Specializing in Agentic RAG and
-                    security-focused software. Currently optimizing workflows on
-                    Arch Linux.
+            <section id="hero" class="hero-section reveal">
+                <h1>Hi, I'm <span class="accent">Kush</span>.</h1>
+                <p class="subtitle">
+                    AI Major & Linux Enthusiast. Building Agentic RAG systems.
                 </p>
             </section>
 
-            <section id="projects">
-                <h2>Selected Work</h2>
-                <div class="grid" id="project-grid"></div>
+            <section id="projects" class="grid-layout">
+                <div class="loading">Initializing projects...</div>
             </section>
         </main>
 

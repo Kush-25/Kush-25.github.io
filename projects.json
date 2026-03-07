@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Agentic RAG System",
+    "description": "An advanced Retrieval-Augmented Generation system utilizing autonomous agents to refine search queries and verify context accuracy.",
+    "tech": ["Python", "LangChain", "OpenAI", "ChromaDB"],
+    "link": "https://github.com/Kush-25/agentic-rag",
+    "category": "AI/ML",
+    "status": "In Progress"
+  },
+  {
+    "title": "CubeTime Android",
+    "description": "Porting the popular iOS speedcubing timer to Android using Jetpack Compose and Kotlin.",
+    "tech": ["Kotlin", "Jetpack Compose", "Coroutines"],
+    "link": "https://github.com/Kush-25/CubeTime-Android",
+    "category": "Mobile",
+    "status": "Active"
+  },
+  {
+    "title": "Arch Linux Rice",
+    "description": "Customized Arch Linux environment with optimized window management and custom shell scripts.",
+    "tech": ["Bash", "Lua", "i3wm/Hyprland"],
+    "link": "#",
+    "category": "Systems",
+    "status": "Maintained"
+  }
+]
