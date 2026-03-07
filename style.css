@@ -1,6 +1,11 @@
 :root {
-    --bg: #0d0d0d;
-    --card-bg: #161616;
+    --bg: #030303;
+    --card-bg: rgba(
+        22,
+        22,
+        22,
+        0.7
+    ); /* Slightly transparent for the glow effect */
     --text: #e0e0e0;
     --text-dim: #a0a0a0;
     --accent: #3b82f6;
@@ -10,7 +15,7 @@
 
 body.terminal-mode {
     --bg: #000000;
-    --card-bg: #050505;
+    --card-bg: rgba(5, 5, 5, 0.8);
     --text: #00ff41;
     --accent: #00ff41;
     --glass: rgba(0, 255, 65, 0.05);
@@ -29,10 +34,59 @@ body {
     line-height: 1.6;
     padding-top: 60px;
     min-height: 150vh;
-    transition: background 0.3s ease;
+    overflow-x: hidden;
 }
 
-/* 3D CUBE SYSTEM */
+/* BACKGROUND ENHANCEMENTS */
+.bg-texture {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.04;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+.bg-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;
+    background: radial-gradient(
+        circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(59, 130, 246, 0.15) 0%,
+        transparent 50%
+    );
+    pointer-events: none;
+    transition: background 0.1s ease-out;
+}
+
+body.terminal-mode .bg-glow {
+    background: radial-gradient(
+        circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(0, 255, 65, 0.1) 0%,
+        transparent 50%
+    );
+}
+
+/* REFINED PROJECT CARDS */
+.project-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(8px); /* Let the glow shine through a bit */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 2.5rem;
+    border-radius: 20px;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* ... (rest of the previous styles: Navigation, Cube, Hero, etc.) ... */
+/* NOTE: Keeping the previous CSS for Cube, Nav, etc. below for completeness */
+
 #cube-viewport {
     position: fixed;
     bottom: 80px;
@@ -83,12 +137,6 @@ body {
     transform: rotateX(-90deg) translateZ(calc(var(--cube-size) / 2));
 }
 
-body.terminal-mode .cube-face {
-    background: transparent !important;
-    border: 1px solid var(--accent);
-}
-
-/* Navigation */
 .glass-nav {
     position: fixed;
     top: 20px;
@@ -120,7 +168,6 @@ body.terminal-mode .cube-face {
 .nav-links a:hover {
     color: var(--accent);
 }
-
 #terminal-toggle {
     background: transparent;
     border: 1px solid var(--text-dim);
@@ -130,7 +177,6 @@ body.terminal-mode .cube-face {
     font-family: "JetBrains Mono";
 }
 
-/* Hero */
 .hero-section {
     text-align: center;
     padding: 120px 20px;
@@ -150,7 +196,6 @@ h1 {
     margin-top: 10px;
 }
 
-/* Grid */
 .grid-layout {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -158,13 +203,6 @@ h1 {
     max-width: 1100px;
     margin: 0 auto;
     padding: 40px 20px 100px;
-}
-.project-card {
-    background: var(--card-bg);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 2.5rem;
-    border-radius: 16px;
-    transition: all 0.4s;
 }
 .tech-tag {
     display: inline-flex;
@@ -181,7 +219,6 @@ h1 {
     height: 12px;
 }
 
-/* Footer Pulse */
 .footer-strip {
     position: fixed;
     bottom: 0;
@@ -239,7 +276,6 @@ h1 {
     height: 45px;
     background: rgba(59, 130, 246, 0.1);
 }
-
 .reveal {
     opacity: 0;
     transform: translateY(30px);
