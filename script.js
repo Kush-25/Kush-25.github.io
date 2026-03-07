@@ -1,13 +1,46 @@
 /**
- * DYNAMIC TECH ICONS HELPER
+ * 3D CUBE SCROLL ENGINE
  */
-const getTechIcon = (techName) => {
-  const slug = techName.toLowerCase().replace(/ /g, "").replace(/\./g, "dot");
-  return `<img class="tech-icon" src="https://cdn.simpleicons.org/${slug}" alt="${techName}" onerror="this.style.display='none'">`;
+const initCubeScroll = () => {
+  const cube = document.querySelector("#cube-container");
+
+  window.addEventListener("scroll", () => {
+    const scrollPercent =
+      window.scrollY /
+      (document.documentElement.scrollHeight - window.innerHeight);
+
+    // Rotates the cube based on scroll
+    const rotateX = -20 + scrollPercent * 360;
+    const rotateY = 45 + scrollPercent * 720;
+
+    cube.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  });
 };
 
 /**
- * CUSTOM CURSOR LOGIC
+ * GITHUB ACTIVITY (Placeholder for the next feature)
+ */
+const fetchGithubActivity = async () => {
+  const commitText = document.querySelector("#latest-commit");
+  try {
+    // We will implement the real API call in the next push
+    commitText.textContent =
+      "git log --oneline: Initialized Portfolio Engine...";
+  } catch (e) {
+    commitText.textContent = "git status: offline";
+  }
+};
+
+/**
+ * TECH ICONS HELPER
+ */
+const getTechIcon = (techName) => {
+  const slug = techName.toLowerCase().replace(/ /g, "").replace(/\./g, "dot");
+  return `<img class="tech-icon" src="https://cdn.simpleicons.org/${slug}" alt="" onerror="this.style.display='none'">`;
+};
+
+/**
+ * INTERACTION LOGIC
  */
 const initCursor = () => {
   const cursor = document.querySelector("#custom-cursor");
@@ -15,53 +48,31 @@ const initCursor = () => {
     cursor.style.left = e.clientX + "px";
     cursor.style.top = e.clientY + "px";
   });
-  const addCursorEvents = () => {
+  const addEvents = () => {
     document.querySelectorAll("a, .project-card, button").forEach((el) => {
       el.addEventListener("mouseenter", () => cursor.classList.add("hover"));
       el.addEventListener("mouseleave", () => cursor.classList.remove("hover"));
     });
   };
-  addCursorEvents();
-  return addCursorEvents;
+  addEvents();
+  return addEvents;
 };
 
-/**
- * TERMINAL MODE TOGGLE
- */
 const initTerminalMode = () => {
   const toggle = document.querySelector("#terminal-toggle");
-  const body = document.body;
   if (localStorage.getItem("terminal-mode") === "enabled")
-    body.classList.add("terminal-mode");
+    document.body.classList.add("terminal-mode");
   toggle.addEventListener("click", () => {
-    body.classList.toggle("terminal-mode");
+    document.body.classList.toggle("terminal-mode");
     localStorage.setItem(
       "terminal-mode",
-      body.classList.contains("terminal-mode") ? "enabled" : "disabled",
+      document.body.classList.contains("terminal-mode")
+        ? "enabled"
+        : "disabled",
     );
   });
 };
 
-/**
- * MAGNETIC TILT LOGIC
- */
-const applyTilt = (card) => {
-  card.addEventListener("mousemove", (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left,
-      y = e.clientY - rect.top;
-    const centerX = rect.width / 2,
-      centerY = rect.height / 2;
-    card.style.transform = `perspective(1000px) rotateX(${(y - centerY) / 12}deg) rotateY(${(centerX - x) / 12}deg) translateY(-8px)`;
-  });
-  card.addEventListener("mouseleave", () => {
-    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)`;
-  });
-};
-
-/**
- * REVEAL ANIMATION LOGIC
- */
 const initScrollReveal = () => {
   const observer = new IntersectionObserver(
     (entries) => {
@@ -81,38 +92,34 @@ const loadProjects = async (refreshCursor) => {
   const projectGrid = document.querySelector("#projects");
   try {
     const response = await fetch("./projects.json");
-    if (!response.ok) throw new Error("Fetch failed");
     const projects = await response.json();
-
     projectGrid.innerHTML = projects
       .map(
         (p) => `
             <div class="project-card reveal">
-                <span class="category">${p.category || "Project"}</span>
+                <span class="category">${p.category}</span>
                 <h3>${p.title}</h3>
                 <p>${p.description}</p>
-                <div class="tech-stack" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:15px;">
+                <div class="tech-stack">
                     ${p.tech.map((t) => `<span class="tech-tag">${getTechIcon(t)} ${t}</span>`).join("")}
                 </div>
-                <a href="${p.link}" target="_blank" style="display:block; margin-top:20px; color:var(--accent); text-decoration:none; font-size:0.85rem; font-weight:600;">SOURCE CODE ↗</a>
+                <a href="${p.link}" target="_blank" style="display:block; margin-top:20px; color:var(--accent); text-decoration:none; font-size:0.85rem; font-weight:600;">SOURCE ↗</a>
             </div>
         `,
       )
       .join("");
-
     initScrollReveal();
-    document
-      .querySelectorAll(".project-card")
-      .forEach((card) => applyTilt(card));
     if (refreshCursor) refreshCursor();
   } catch (e) {
-    projectGrid.innerHTML = `<p style="color:red;">Error: ${e.message}</p>`;
-    initScrollReveal();
+    console.error(e);
   }
 };
 
+// Main Execution
 document.addEventListener("DOMContentLoaded", () => {
   const refreshCursor = initCursor();
   initTerminalMode();
+  initCubeScroll();
   loadProjects(refreshCursor);
+  fetchGithubActivity();
 });

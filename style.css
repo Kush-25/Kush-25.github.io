@@ -5,28 +5,15 @@
     --text-dim: #a0a0a0;
     --accent: #3b82f6;
     --glass: rgba(255, 255, 255, 0.03);
+    --cube-size: 60px;
 }
 
 body.terminal-mode {
     --bg: #000000;
     --card-bg: #050505;
     --text: #00ff41;
-    --text-dim: #008f11;
     --accent: #00ff41;
     --glass: rgba(0, 255, 65, 0.05);
-    font-family: "JetBrains Mono", monospace !important;
-}
-
-body.terminal-mode .project-card {
-    border: 1px solid #00ff41;
-    border-radius: 0;
-}
-body.terminal-mode .glass-nav {
-    border: 1px solid #00ff41;
-    border-radius: 0;
-}
-body.terminal-mode img.tech-icon {
-    filter: sepia(100%) hue-rotate(90deg) brightness(150%);
 }
 
 * {
@@ -40,51 +27,72 @@ body {
     font-family: "Inter", sans-serif;
     margin: 0;
     line-height: 1.6;
-    padding-top: 100px;
-    min-height: 200vh;
-    transition:
-        background 0.3s ease,
-        color 0.3s ease;
+    padding-top: 60px;
+    min-height: 200vh; /* Scroll room for the cube to spin */
 }
 
-#terminal-toggle {
-    background: transparent;
-    border: 1px solid var(--text-dim);
-    color: var(--text);
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-family: "JetBrains Mono", monospace;
-    transition: all 0.3s;
-}
-
-#terminal-toggle:hover {
-    background: var(--accent);
-    color: var(--bg);
-}
-
-#custom-cursor {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--accent);
-    border-radius: 50%;
+/* 3D CUBE SYSTEM */
+#cube-viewport {
     position: fixed;
+    bottom: 50px;
+    right: 50px;
+    width: var(--cube-size);
+    height: var(--cube-size);
+    perspective: 1000px;
+    z-index: 100;
     pointer-events: none;
-    z-index: 9999;
-    transition:
-        transform 0.1s ease-out,
-        background 0.3s ease,
-        width 0.3s ease,
-        height 0.3s ease;
-    transform: translate(-50%, -50%);
 }
 
-#custom-cursor.hover {
-    width: 40px;
-    height: 40px;
-    background: rgba(59, 130, 246, 0.1);
-    border-color: var(--accent);
+#cube-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transform: rotateX(-20deg) rotateY(45deg);
+    transition: transform 0.1s ease-out;
 }
 
+.cube-face {
+    position: absolute;
+    width: var(--cube-size);
+    height: var(--cube-size);
+    border: 2px solid var(--bg);
+    opacity: 0.9;
+}
+
+/* Rubik's Colors */
+.front {
+    background: #b71234;
+    transform: translateZ(calc(var(--cube-size) / 2));
+}
+.back {
+    background: #ff5800;
+    transform: rotateY(180deg) translateZ(calc(var(--cube-size) / 2));
+}
+.right {
+    background: #0046ad;
+    transform: rotateY(90deg) translateZ(calc(var(--cube-size) / 2));
+}
+.left {
+    background: #009b48;
+    transform: rotateY(-90deg) translateZ(calc(var(--cube-size) / 2));
+}
+.top {
+    background: #ffffff;
+    transform: rotateX(90deg) translateZ(calc(var(--cube-size) / 2));
+}
+.bottom {
+    background: #ffd500;
+    transform: rotateX(-90deg) translateZ(calc(var(--cube-size) / 2));
+}
+
+/* Terminal Mode Cube */
+body.terminal-mode .cube-face {
+    background: transparent !important;
+    border: 1px solid var(--accent);
+}
+
+/* UI Elements */
 .glass-nav {
     position: fixed;
     top: 20px;
@@ -93,7 +101,6 @@ body {
     padding: 10px 30px;
     background: var(--glass);
     backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 50px;
     display: flex;
@@ -106,28 +113,32 @@ body {
     list-style: none;
     display: flex;
     gap: 20px;
-    margin: 0;
-    padding: 0;
     align-items: center;
+    padding: 0;
 }
 .nav-links a {
     color: var(--text-dim);
     text-decoration: none;
     font-size: 0.9rem;
-    transition: color 0.3s;
 }
-.nav-links a:hover {
-    color: var(--accent);
+
+#terminal-toggle {
+    background: transparent;
+    border: 1px solid var(--text-dim);
+    color: var(--text);
+    padding: 2px 8px;
+    border-radius: 4px;
 }
 
 .hero-section {
     text-align: center;
-    padding: 100px 20px;
+    padding: 120px 20px;
 }
 h1 {
-    font-size: 4rem;
-    margin-bottom: 0.5rem;
+    font-size: 4.5rem;
+    margin: 0;
     font-weight: 600;
+    letter-spacing: -2px;
 }
 .accent {
     color: var(--accent);
@@ -135,62 +146,79 @@ h1 {
 .subtitle {
     color: var(--text-dim);
     font-size: 1.2rem;
+    margin-top: 10px;
 }
 
 .grid-layout {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 25px;
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 40px 20px;
 }
-
 .project-card {
     background: var(--card-bg);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 2rem;
+    padding: 2.5rem;
     border-radius: 16px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    transform-style: preserve-3d;
-    perspective: 1000px;
-}
-
-.project-card:hover {
-    border-color: var(--accent);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-.category {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.7rem;
-    color: var(--accent);
-    letter-spacing: 1px;
+    transition: all 0.4s;
 }
 
 .tech-tag {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     background: rgba(255, 255, 255, 0.05);
-    padding: 6px 12px;
-    border-radius: 6px;
-    color: var(--text);
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin: 4px;
+}
+.tech-icon {
+    width: 12px;
+    height: 12px;
 }
 
-.tech-icon {
-    width: 14px;
-    height: 14px;
-    object-fit: contain;
+.footer-strip {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 10px 20px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.8rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 90;
+}
+.terminal-prompt {
+    color: var(--accent);
+    margin-right: 10px;
+}
+
+#custom-cursor {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition:
+        width 0.3s,
+        height 0.3s;
+}
+#custom-cursor.hover {
+    width: 45px;
+    height: 45px;
+    background: rgba(59, 130, 246, 0.1);
 }
 
 .reveal {
     opacity: 0;
     transform: translateY(30px);
-    transition:
-        opacity 0.8s ease-out,
-        transform 0.8s ease-out;
+    transition: 0.8s ease-out;
 }
 .reveal.active {
     opacity: 1;

@@ -13,6 +13,17 @@
     <body>
         <div id="custom-cursor"></div>
 
+        <div id="cube-viewport">
+            <div id="cube-container">
+                <div class="cube-face front"></div>
+                <div class="cube-face back"></div>
+                <div class="cube-face right"></div>
+                <div class="cube-face left"></div>
+                <div class="cube-face top"></div>
+                <div class="cube-face bottom"></div>
+            </div>
+        </div>
+
         <nav class="glass-nav">
             <div class="logo">K25</div>
             <ul class="nav-links">
@@ -24,9 +35,7 @@
                     >
                 </li>
                 <li>
-                    <button id="terminal-toggle" title="Toggle Terminal Mode">
-                        <span>>_</span>
-                    </button>
+                    <button id="terminal-toggle"><span>>_</span></button>
                 </li>
             </ul>
         </nav>
@@ -43,6 +52,13 @@
                 <div class="loading">Initializing projects...</div>
             </section>
         </main>
+
+        <footer class="footer-strip">
+            <div id="github-pulse">
+                <span class="terminal-prompt">kush@portfolio:~$</span>
+                <span id="latest-commit">git log --oneline -n 1...</span>
+            </div>
+        </footer>
 
         <script src="script.js"></script>
     </body>
