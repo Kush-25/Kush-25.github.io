@@ -9,7 +9,6 @@ const initCursor = () => {
     cursor.style.top = e.clientY + "px";
   });
 
-  // Add hover effect to all interactive elements
   const addCursorEvents = () => {
     const interactiveElements = document.querySelectorAll(
       "a, .project-card, button",
@@ -21,8 +20,30 @@ const initCursor = () => {
   };
 
   addCursorEvents();
-  // Return the function so we can call it again after projects load
   return addCursorEvents;
+};
+
+/**
+ * TERMINAL MODE TOGGLE
+ */
+const initTerminalMode = () => {
+  const toggle = document.querySelector("#terminal-toggle");
+  const body = document.body;
+
+  // Check for saved preference
+  if (localStorage.getItem("terminal-mode") === "enabled") {
+    body.classList.add("terminal-mode");
+  }
+
+  toggle.addEventListener("click", () => {
+    body.classList.toggle("terminal-mode");
+
+    if (body.classList.contains("terminal-mode")) {
+      localStorage.setItem("terminal-mode", "enabled");
+    } else {
+      localStorage.setItem("terminal-mode", "disabled");
+    }
+  });
 };
 
 /**
@@ -83,7 +104,7 @@ const loadProjects = async (refreshCursor) => {
                 <span class="category">${project.category || "Development"}</span>
                 <h3>${project.title}</h3>
                 <p>${project.description}</p>
-                <div class="tech-stack">
+                <div class="tech-stack" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px;">
                     ${project.tech.map((t) => `<span class="tech-tag">${t}</span>`).join("")}
                 </div>
                 <a href="${project.link}" target="_blank" style="display:block; margin-top:20px; color:var(--accent); text-decoration:none; font-size:0.9rem;">View Project ↗</a>
@@ -96,8 +117,6 @@ const loadProjects = async (refreshCursor) => {
     document
       .querySelectorAll(".project-card")
       .forEach((card) => applyTilt(card));
-
-    // Refresh cursor listeners for the new cards
     if (refreshCursor) refreshCursor();
   } catch (error) {
     console.error("Error:", error);
@@ -106,8 +125,9 @@ const loadProjects = async (refreshCursor) => {
   }
 };
 
-// Start the process
+// Start everything
 document.addEventListener("DOMContentLoaded", () => {
   const refreshCursor = initCursor();
+  initTerminalMode();
   loadProjects(refreshCursor);
 });
