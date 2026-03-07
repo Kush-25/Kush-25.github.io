@@ -1,34 +1,50 @@
 /**
- * BACKGROUND INTERACTIVE GLOW
- */
-const initBgGlow = () => {
-  document.addEventListener("mousemove", (e) => {
-    const xPercent = (e.clientX / window.innerWidth) * 100;
-    const yPercent = (e.clientY / window.innerHeight) * 100;
-    document.documentElement.style.setProperty("--mouse-x", `${xPercent}%`);
-    document.documentElement.style.setProperty("--mouse-y", `${yPercent}%`);
-  });
-};
-
-/**
- * LIVE GITHUB PULSE
+ * LIVE GITHUB PULSE (With Caching)
  */
 const fetchGithubActivity = async () => {
   const commitText = document.querySelector("#latest-commit");
+  const statusDot = document.querySelector(".status-dot");
   const username = "Kush-25";
+
+  const cachedData = localStorage.getItem("github-last-commit");
+  const cachedTime = localStorage.getItem("github-last-fetch");
+
+  // Use cache if it's fresh (under 15 mins)
+  if (cachedData && cachedTime && Date.now() - cachedTime < 900000) {
+    commitText.textContent = cachedData;
+    return;
+  }
+
   try {
     const response = await fetch(
       `https://api.github.com/users/${username}/events/public`,
     );
+
+    if (response.status === 403) {
+      // Rate limit handling
+      commitText.textContent =
+        cachedData || "git status: standby (rate limited)";
+      statusDot.style.background = "#fbbf24";
+      statusDot.style.boxShadow = "0 0 8px #fbbf24";
+      return;
+    }
+
     const events = await response.json();
     const pushEvent = events.find((e) => e.type === "PushEvent");
+
     if (pushEvent) {
       const repo = pushEvent.repo.name.split("/")[1];
       const message = pushEvent.payload.commits[0].message;
-      commitText.textContent = `git log -1 --pretty=format:"%s" [${repo}]: ${message}`;
+      const logString = `git log -1 --pretty=format:"%s" [${repo}]: ${message}`;
+
+      commitText.textContent = logString;
+      localStorage.setItem("github-last-commit", logString);
+      localStorage.setItem("github-last-fetch", Date.now());
     }
   } catch (e) {
-    commitText.textContent = "git log: could not reach remote server.";
+    commitText.textContent = cachedData || "git log: offline";
+    statusDot.style.background = "#ff4b2b";
+    statusDot.style.boxShadow = "0 0 8px #ff4b2b";
   }
 };
 
@@ -44,6 +60,18 @@ const initCubeScroll = () => {
     const rotateX = -20 + scrollPercent * 360;
     const rotateY = 45 + scrollPercent * 720;
     cube.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  });
+};
+
+/**
+ * INTERACTIVE BACKGROUND GLOW
+ */
+const initBgGlow = () => {
+  document.addEventListener("mousemove", (e) => {
+    const xPercent = (e.clientX / window.innerWidth) * 100;
+    const yPercent = (e.clientY / window.innerHeight) * 100;
+    document.documentElement.style.setProperty("--mouse-x", `${xPercent}%`);
+    document.documentElement.style.setProperty("--mouse-y", `${yPercent}%`);
   });
 };
 
@@ -131,12 +159,12 @@ const loadProjects = async (refreshCursor) => {
   }
 };
 
-// Main Execution
+// Main Initialization
 document.addEventListener("DOMContentLoaded", () => {
   const refreshCursor = initCursor();
   initTerminalMode();
   initCubeScroll();
-  initBgGlow(); // Initialize background glow
+  initBgGlow();
   loadProjects(refreshCursor);
   fetchGithubActivity();
 });

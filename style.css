@@ -1,11 +1,6 @@
 :root {
     --bg: #030303;
-    --card-bg: rgba(
-        22,
-        22,
-        22,
-        0.7
-    ); /* Slightly transparent for the glow effect */
+    --card-bg: rgba(22, 22, 22, 0.7);
     --text: #e0e0e0;
     --text-dim: #a0a0a0;
     --accent: #3b82f6;
@@ -35,9 +30,10 @@ body {
     padding-top: 60px;
     min-height: 150vh;
     overflow-x: hidden;
+    transition: background 0.3s ease;
 }
 
-/* BACKGROUND ENHANCEMENTS */
+/* Background Layers */
 .bg-texture {
     position: fixed;
     top: 0;
@@ -59,34 +55,21 @@ body {
     z-index: -2;
     background: radial-gradient(
         circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-        rgba(59, 130, 246, 0.15) 0%,
+        rgba(59, 130, 246, 0.12) 0%,
         transparent 50%
     );
     pointer-events: none;
-    transition: background 0.1s ease-out;
 }
 
 body.terminal-mode .bg-glow {
     background: radial-gradient(
         circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-        rgba(0, 255, 65, 0.1) 0%,
+        rgba(0, 255, 65, 0.08) 0%,
         transparent 50%
     );
 }
 
-/* REFINED PROJECT CARDS */
-.project-card {
-    background: var(--card-bg);
-    backdrop-filter: blur(8px); /* Let the glow shine through a bit */
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 2.5rem;
-    border-radius: 20px;
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-}
-
-/* ... (rest of the previous styles: Navigation, Cube, Hero, etc.) ... */
-/* NOTE: Keeping the previous CSS for Cube, Nav, etc. below for completeness */
-
+/* 3D Cube Decor */
 #cube-viewport {
     position: fixed;
     bottom: 80px;
@@ -137,6 +120,12 @@ body.terminal-mode .bg-glow {
     transform: rotateX(-90deg) translateZ(calc(var(--cube-size) / 2));
 }
 
+body.terminal-mode .cube-face {
+    background: transparent !important;
+    border: 1px solid var(--accent);
+}
+
+/* Navigation */
 .glass-nav {
     position: fixed;
     top: 20px;
@@ -168,6 +157,7 @@ body.terminal-mode .bg-glow {
 .nav-links a:hover {
     color: var(--accent);
 }
+
 #terminal-toggle {
     background: transparent;
     border: 1px solid var(--text-dim);
@@ -177,6 +167,7 @@ body.terminal-mode .bg-glow {
     font-family: "JetBrains Mono";
 }
 
+/* Hero Section */
 .hero-section {
     text-align: center;
     padding: 120px 20px;
@@ -196,29 +187,47 @@ h1 {
     margin-top: 10px;
 }
 
+/* Projects Grid */
 .grid-layout {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 25px;
     max-width: 1100px;
     margin: 0 auto;
-    padding: 40px 20px 100px;
+    padding: 40px 20px 120px;
 }
+.project-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 2.5rem;
+    border-radius: 20px;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.project-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    transform: translateY(-5px);
+}
+
 .tech-tag {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    font-size: 0.7rem;
+    gap: 8px;
+    font-size: 0.75rem;
     background: rgba(255, 255, 255, 0.05);
-    padding: 4px 10px;
-    border-radius: 4px;
+    padding: 6px 12px;
+    border-radius: 6px;
     margin: 4px;
+    color: var(--text);
 }
 .tech-icon {
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
 }
 
+/* Footer Pulse */
 .footer-strip {
     position: fixed;
     bottom: 0;
@@ -247,17 +256,18 @@ h1 {
     animation: pulse 2s infinite;
 }
 @keyframes pulse {
-    0% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.3;
-    }
+    0%,
     100% {
         opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.4;
+        transform: scale(0.9);
     }
 }
 
+/* Interactions */
 #custom-cursor {
     width: 20px;
     height: 20px;
@@ -276,6 +286,7 @@ h1 {
     height: 45px;
     background: rgba(59, 130, 246, 0.1);
 }
+
 .reveal {
     opacity: 0;
     transform: translateY(30px);
