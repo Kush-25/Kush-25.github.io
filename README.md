@@ -1,1 +1,1 @@
-[PORTFOLIO] (https://kush-25.github.io)
+[GitHub Pages](https://kush-25.github.io/).
